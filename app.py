@@ -32,9 +32,10 @@ def adicionar():
 
 @app.route('/excluir/<id>', methods=['POST', 'GET'])
 def excluir(id):
-    jogo = db.jogos.find_one({'_id': ObjectId(id)})
+    _id = ObjectId(id)
+    jogo = db.jogos.find_one({'_id': _id})
     if request.method == 'POST':
-        db.jogos.delete_one({'_id': ObjectId(id)})
+        db.jogos.delete_one({'_id': _id})
         return redirect('/')
     else:
         return render_template('excluir.html', jogo=jogo)
