@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Adicionar jogo - Jogoteca</title>
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% include 'partials/_header.html' %}
+    <a href="{{ url_for('index') }}">Retornar</a>
+    <form method="POST">
+        <p>Deseja Excluir este jogo? {{ jogo.nome }}</p>
+        <input type="submit" value="Excluir">
+    </form>
+</div>
+{% endblock %}

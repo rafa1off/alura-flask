@@ -1,17 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for
 from models import Jogo
+from db import db
+from bson import ObjectId
 
 app = Flask(__name__)
 
-jogos = [
+'''jogos = [
     Jogo('Tetris', 'Puzzle', 'Atari'),
     Jogo('God Of War', 'RPG', 'Play Station'),
     Jogo('Skyrim', 'RPG', 'PC'),
-]
+]'''
 
 @app.route('/')
 def index():
-    return render_template('lista.html', titulo='Jogos', jogos=jogos)
+    jogos = db.jogos.find()
+    return render_template('lista.html', titulo='Jogos', jogos=jogos, db=db)
 
 
 @app.route('/adicionar', methods=['GET', 'POST'])
@@ -20,10 +23,21 @@ def adicionar():
         nome = request.form['nome']
         categoria = request.form['categoria']
         console = request.form['console']
-        jogos.append(Jogo(nome, categoria, console))
-        return redirect(url_for('index'))
+        jogo = Jogo(nome, categoria, console)
+        jogo.add()
+        return redirect('/')
     else:
         return render_template('adicionar.html', titulo='Jogos')
+
+
+@app.route('/excluir/<id>', methods=['POST', 'GET'])
+def excluir(id):
+    jogo = db.jogos.find_one({'_id': ObjectId(id)})
+    if request.method == 'POST':
+        db.jogos.delete_one({'_id': ObjectId(id)})
+        return redirect('/')
+    else:
+        return render_template('excluir.html', jogo=jogo)
 
 
 if __name__ == '__main__':

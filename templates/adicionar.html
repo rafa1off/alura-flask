@@ -4,9 +4,8 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-    <div class="page-header">
-        <h1>{{ titulo }}</h1>
-    </div>
+    {% include 'partials/_header.html' %}
+    <a href="{{ url_for('index') }}">Retornar</a>
     <form method="POST">
       <fieldset>
         <div class="form-group">
