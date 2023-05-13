@@ -5,4 +5,4 @@ import os
 load_dotenv()
 
 db = MongoClient(str(os.getenv('CONNECTION_STRING'))).teste1
-# db = client.teste1
+jogos = db.jogos
