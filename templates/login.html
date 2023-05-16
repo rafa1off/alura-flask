@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Logar - Jogoteca</title>
+{% endblock %}
+{% block body %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %} 
+            <ul id="messages" class="list-unstyled">
+            {% for message in messages %}
+                <li class="alert alert-success">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    {% include 'partials/_header.html' %}
+    <a href="{{ url_for('index') }}">Retornar</a>
+    <form method="POST" action="/autenticar">
+        <p><label>Nome de usuário:</label> <input class="form-control" type="text" name="usuario" required></p>
+        <p><label>Senha:</label> <input class="form-control" type="password" name="senha" required></p>
+        <p><button class="btn btn-primary" type="submit">Entrar</button></p>
+    </form>
+</div>
+{% endblock %}

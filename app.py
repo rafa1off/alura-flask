@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, session, flash
 from models import Jogo
 from db import jogos
 from bson import ObjectId
 
 app = Flask(__name__)
+app.secret_key = 'alura'
 
 @app.route('/')
 def index():
@@ -27,6 +28,21 @@ def excluir(id):
     else:
         return render_template('excluir.html', jogo=jogos.find_one({'_id': ObjectId(id)}))
 
+
+@app.route('/logar')
+def logar():
+    return render_template('login.html', titulo='Faça seu login')
+
+
+@app.route('/autenticar', methods=['POST'])
+def autenticar():
+    if request.form['senha'] == 'senha':
+        session['usuario_logado'] = request.form['usuario']
+        flash(session['usuario_logado'] + ' logado com sucesso')
+        return redirect('/')
+    else:
+        flash('Falha na autenticação')
+        return redirect('/logar')
 
 if __name__ == '__main__':
     app.run(debug=True, port=8000)
